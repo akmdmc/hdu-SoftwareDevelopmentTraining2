@@ -92,5 +92,8 @@ const identity = ref("管理员")
 .container :deep(.arco-layout-content) {
   height: 800px;
   /* background-color: rgb(var(--arcoblue-6)); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
