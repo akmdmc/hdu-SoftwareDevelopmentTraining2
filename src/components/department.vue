@@ -138,15 +138,11 @@ const dataForm = reactive({
 
 const dataList = reactive<department[]>([]);
 
-const pagination = reactive({
-  pageSize: 8,
-});
 const pageIndex = ref(1);
 const pageSize = ref(8);
 const totalPage = ref(0);
 const dataListLoading = ref(false);
 const dataListSelections = reactive<department[]>([]);
-const addOrUpdateVisible = ref(false);
 
 getDataList();
 
@@ -180,17 +176,6 @@ async function getDataList() {
 }
 
 function pageChange() {
-  getDataList();
-}
-// 每页数
-function sizeChangeHandle(val: number) {
-  pageSize.value = val;
-  pageIndex.value = 1;
-  getDataList();
-}
-// 当前页
-function currentChangeHandle(val: number) {
-  pageIndex.value = val;
   getDataList();
 }
 
