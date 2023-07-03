@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView, RouterLink } from "vue-router";
-import { ref } from "vue";
+import { h, ref } from "vue";
 
 const identity = ref("管理员")
 </script>
@@ -52,7 +52,7 @@ const identity = ref("管理员")
       >
       <a-layout-content>
         <a-card
-          :style="{ width: '100%', minHeight: '600px', marginTop: '20px' }"
+          :style="{ width: '100%', minHeight: '600px', marginTop: '20px',height: '100%' }"
         >
           <RouterView></RouterView> </a-card
       ></a-layout-content>
@@ -62,7 +62,7 @@ const identity = ref("管理员")
 
 <style scoped>
 .container {
-  width: 80vw;
+  width: 100vw;
   min-height: 700px;
   background-color: rgb(242, 243, 245);
   display: flex;
