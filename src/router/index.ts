@@ -8,7 +8,7 @@ const router = createRouter({
       path: '',
       name: 'home',
       component: HomeView,
-      redirect:'/visit',
+      redirect:'/consultingroom',
       children:[    {
         path: '/visit',
         name: 'visit',
@@ -33,11 +33,6 @@ const router = createRouter({
         path: '/department',
         name: 'department',
         component: () => import("../components/department.vue")
-      },
-      {
-        path: '/departmentAddOrUpdate',
-        name: 'departmentAddOrUpdate',
-        component: () => import("../components/department-add-or-update.vue")
       },
       {
         path: '/consultingroom',

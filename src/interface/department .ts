@@ -1,4 +1,4 @@
-interface department {//科室
+export interface department {//科室
   id:number,
   name:string,
   introduction:string,
