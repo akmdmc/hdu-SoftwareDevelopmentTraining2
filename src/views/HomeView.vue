@@ -63,7 +63,7 @@ const identity = ref("管理员")
 <style scoped>
 .container {
   width: 80vw;
-  height: 700px;
+  min-height: 700px;
   background-color: rgb(242, 243, 245);
   display: flex;
   flex-direction: column;

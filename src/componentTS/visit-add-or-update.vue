@@ -1,0 +1,118 @@
+<template>
+  <el-dialog
+    :title="!dataForm.id ? '新增' : '修改'"
+    :close-on-click-modal="false"
+    :visible.sync="visible">
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+    <el-form-item label="医生姓名" prop="doctorName">
+      <el-input v-model="dataForm.doctorName" placeholder="医生姓名"></el-input>
+    </el-form-item>
+    <el-form-item label="医生id" prop="doctorId">
+      <el-input v-model="dataForm.doctorId" placeholder="医生id"></el-input>
+    </el-form-item>
+    <el-form-item label="出诊时间段" prop="visitTimeSlot">
+      <el-input v-model="dataForm.visitTimeSlot" placeholder="出诊时间段"></el-input>
+    </el-form-item>
+    <el-form-item label="出诊时间" prop="visitTime">
+      <el-input v-model="dataForm.visitTime" placeholder="出诊时间"></el-input>
+    </el-form-item>
+    </el-form>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="visible = false">取消</el-button>
+      <el-button type="primary" @click="dataFormSubmit()">确定</el-button>
+    </span>
+  </el-dialog>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+@Component({})
+export default class Component extends Vue {
+  visible: boolean = false
+  dataForm: any = {
+    id: 0,
+    doctorName: '',
+    doctorId: '',
+    visitTimeSlot: '',
+    visitTime: ''
+  }
+  dataRule: any = {
+    doctorName: [{
+      required: true,
+      message: '医生姓名不能为空',
+      trigger: 'blur'
+    }],
+    doctorId: [{
+      required: true,
+      message: '医生id不能为空',
+      trigger: 'blur'
+    }],
+    visitTimeSlot: [{
+      required: true,
+      message: '出诊时间段不能为空',
+      trigger: 'blur'
+    }],
+    visitTime: [{
+      required: true,
+      message: '出诊时间不能为空',
+      trigger: 'blur'
+    }]
+  }
+  init(id) {
+    this.dataForm.id = id || 0
+    this.visible = true
+    this.$nextTick(() => {
+      (this.$refs['dataForm'] as any).resetFields()
+      if (this.dataForm.id) {
+        this.$http({
+          url: this.$http.adornUrl(`/hospital_summer/visit/info/${this.dataForm.id}`),
+          method: 'get',
+          params: this.$http.adornParams()
+        }).then(({
+          data
+        }) => {
+          if (data && data.code === 0) {
+            this.dataForm.doctorName = data.visit.doctorName
+            this.dataForm.doctorId = data.visit.doctorId
+            this.dataForm.visitTimeSlot = data.visit.visitTimeSlot
+            this.dataForm.visitTime = data.visit.visitTime
+          }
+        })
+      }
+    })
+  }
+  dataFormSubmit() {
+    (this.$refs['dataForm'] as any).validate(valid => {
+      if (valid) {
+        this.$http({
+          url: this.$http.adornUrl(`/hospital_summer/visit/${!this.dataForm.id ? 'save' : 'update'}`),
+          method: 'post',
+          data: this.$http.adornData({
+            'id': this.dataForm.id || undefined,
+            'doctorName': this.dataForm.doctorName,
+            'doctorId': this.dataForm.doctorId,
+            'visitTimeSlot': this.dataForm.visitTimeSlot,
+            'visitTime': this.dataForm.visitTime
+          })
+        }).then(({
+          data
+        }) => {
+          if (data && data.code === 0) {
+            this.$message({
+              message: '操作成功',
+              type: 'success',
+              duration: 1500,
+              onClose: () => {
+                this.visible = false
+                this.$emit('refreshDataList')
+              }
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
+      }
+    })
+  }
+}
+</script>
